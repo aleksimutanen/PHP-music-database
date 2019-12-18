@@ -4,9 +4,9 @@
     //Database credentials. Assuming you are running MySQL
     //server with default setting (user 'root' with no password)
 
-    define('DB_SERVER', '127.0.0.1');
-    define('DB_USERNAME', 'root');
-    define('DB_PASSWORD', '');
+    define('DB_SERVER', '127.0.0.1:50222');
+    define('DB_USERNAME', 'azure');
+    define('DB_PASSWORD', '6#vWHD_$');
     define('DB_NAME', 'localdb');
     
     //Attempt to connect to MySQL database
