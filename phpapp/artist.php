@@ -33,7 +33,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     if($_SERVER["REQUEST_METHOD"] == "GET"){
         //echo "method found"; /*debug for errors in form send*/
 
-        $sql = "SELECT artist.name, logo, artist.image, genre.name as genre
+        $sql = "SELECT artist.name, logo, artist.image, genre.name as genre, artist.info, artist.country
                 FROM artist
                 INNER JOIN genre ON artist.genreid = genre.genreid
                 WHERE artist.name = '" . $_GET["submit"] . "';
@@ -55,6 +55,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             echo "<tr><td><div class='bg'><p>" . $row["name"]. "</p></div></td><td><img src=" . $row["logo"]. "></td></tr>";
             //echo "<tr><td><div class='bg'><p>" . $row["name"]. "</p></div></td><td><img src=" . $row["logo"]. "></td></tr>";
             echo "<tr><td><form action='members.php' method='get'><input type='hidden' name='submit' value='" . $row["name"]. "'><input type='image' class='fg' src=" . $row["image"]. "></form></td><td><div class='bg'><p>" . $row["genre"]. "</p></div></td></tr>";
+            echo "<tr><td><div class='bg'><p>" . $row["info"]. "</p></div></td><td><div class='bg'><p>" . $row["country"]. "</p></div></td></tr>";
             //echo "<tr><td><form action='members.php' method='get'><input type='image' class='fg' src=" . $row["image"]. " name='submit' value='" . $row["name"]. "'></form></td><td><div class='bg'><p>" . $row["genre"]. "</p></div></td></tr>";
             //echo "<tr><td><form action='members.php' method='get'><input id='select-members' type='submit' name='submit' value='" . $row["name"]. "'><img src=" . $row["image"]. "></form></td><td><div class='bg'><p>" . $row["genre"]. "</p></div></td></tr>";
             //echo "<tr><td><img src=" . $row["image"]. "></td><td><div class='bg'><p>" . $row["genre"]. "</p></div></td></tr>";

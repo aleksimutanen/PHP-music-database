@@ -12,21 +12,22 @@ if(!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] !== true){
 require_once "config.php";
  
 // Define variables and initialize with empty values
-$genre = $logo = $name = $image = "";
-$genre_err = $logo_err = $name_err = $image_err = "";
+$genre = $logo = $name = $image = $info = $country = "";
+$genre_err = $logo_err = $name_err = $image_err = $info_err = $country_err = "";
 
-$param_genre = $param_logo = $param_name = $param_image = "";
+$param_genre = $param_logo = $param_name = $param_image = $param_info = $param_country = "";
 
 ##################################
 
-$stmt = mysqli_prepare($link, "INSERT INTO artist (genreid, logo, name, image) VALUES (?, ?, ?, ?)");
-mysqli_stmt_bind_param($stmt, 'isss', $param_genre, $param_logo, $param_name, $param_image);
+$stmt = mysqli_prepare($link, "INSERT INTO artist (genreid, logo, name, image, info, country) VALUES (?, ?, ?, ?, ?, ?)");
+mysqli_stmt_bind_param($stmt, 'isssss', $param_genre, $param_logo, $param_name, $param_image, $param_info, $param_country);
 
 $param_genre = "";
 $param_logo = "";
 $param_name = "";
 $param_image = "";
-
+$param_info = "";
+$param_country = "";
 ##############################################
 
 
@@ -111,14 +112,40 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     }
 
+    // Validate info
+    if (empty(trim($_POST["info"]))) {
+        $info_err = "Please enter info.";
+    } else {
+        $info = trim($_POST["info"]);
+        // Prepare a select statement
+        $sql = "SELECT info FROM artist WHERE info = '" . $_POST["info"] . "';";
+        
+        $result = $link->query($sql);
+
+        $param_info = $info;
+    }
+
+     // Validate country
+    if (empty(trim($_POST["country"]))) {
+        $country_err = "Please enter country.";
+    } else {
+        $country = trim($_POST["country"]);
+        // Prepare a select statement
+        $sql = "SELECT country FROM artist WHERE country = '" . $_POST["country"] . "';";
+        
+        $result = $link->query($sql);
+
+        $param_country = $country;
+    }
+
 
     /* execute prepared statement */
 
-    if(empty($name_err) && empty($genre_err) && empty($logo_err) && empty($image_err)) {
+    if(empty($name_err) && empty($genre_err) && empty($logo_err) && empty($image_err) && empty($info_err) && empty($country_err)) {
 
         if (mysqli_stmt_execute($stmt)) {
             echo "SUCCESSFULLY ADDED ARTIST";
-            $genre = $logo = $name = $image = "";
+            $genre = $logo = $name = $image = $info = $country = "";
         } else {
             echo "something went wrong";
         }
@@ -179,6 +206,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <label>Image URL</label>
                 <input type="text" name="image" class="form-control" value="<?php echo $image; ?>">
                 <span class="help-block"><?php echo $image_err; ?></span>
+            </div>
+             <div class="form-group <?php echo (!empty($info_err)) ? 'has-error' : ''; ?>">
+                <label>Describe the artist</label>
+                <input type="text" name="info" class="form-control" value="<?php echo $info; ?>">
+                <span class="help-block"><?php echo $info_err; ?></span>
+            </div>
+            <div class="form-group <?php echo (!empty($country_err)) ? 'has-error' : ''; ?>">
+                <label>Country abbreviation</label>
+                <input type="text" name="country" class="form-control" value="<?php echo $country; ?>" placeholder="max 3 letter abbreviation, USA / CN etc.">
+                <span class="help-block"><?php echo $country_err; ?></span>
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-outline-light text-light" value="Submit">
