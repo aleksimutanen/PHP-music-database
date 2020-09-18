@@ -1,5 +1,5 @@
 # PHP-music-database
-Music database web app for Web app development with PHP / SQL - course
+Small and simple music database web app for Web app development with PHP / SQL - course
 
 This project is an web application for music enthusiasts to collect data about various artists, their members, different genres, albums etc.
 There is a simple UI for adding, updating and deleting the meantioned data types. Only thing that is not implemented is adding different types of roles
